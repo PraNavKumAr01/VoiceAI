@@ -1,5 +1,5 @@
 import os
-from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_community.tools.tavily_search import TavilyAnswer
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
@@ -9,7 +9,7 @@ load_dotenv()
 os.environ["TAVILY_API_KEY"] = os.environ.get("TAVILY_API_KEY")
 os.environ["GROQ_API_KEY"] = os.environ.get("GROQ_API_KEY")
 
-searchTool = DuckDuckGoSearchRun()
+searchTool = TavilyAnswer()
 llm = ChatGroq(temperature=0, model_name="llama3-8b-8192")
 
 def get_llm_response(transcript):
