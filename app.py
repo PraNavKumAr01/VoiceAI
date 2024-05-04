@@ -5,6 +5,10 @@ from STT import audio_to_text
 
 app = FastAPI()
 
+@app.get("/start-session/")
+async def start_session():
+    return {"message": "Server session started"}
+
 @app.post("/text-to-llm/")
 async def text_to_llm(text: str):
     if not text:
@@ -12,6 +16,14 @@ async def text_to_llm(text: str):
 
     llm_response = get_llm_response(text)
     return {"llm_response": llm_response}
+
+@app.post("/text-to-ai-voice/")
+async def text_to_ai_voice(text: str):
+
+    llm_response = get_llm_response(text)
+    ai_audio_bytes = text_to_speech(llm_response)
+
+    return {"audio_data": ai_audio_bytes}
 
 @app.post("/audio-to-ai-voice/")
 async def audio_to_ai_voice(audio_data: bytes):
