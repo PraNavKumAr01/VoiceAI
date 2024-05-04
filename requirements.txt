@@ -1,0 +1,5 @@
+deepgram-sdk
+langchain
+langchain_groq
+fastapi
+uvicorn
