@@ -2,7 +2,6 @@ import os
 from langchain_community.tools.tavily_search import TavilyAnswer 
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.memory import ConversationBufferMemory
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,7 +11,6 @@ os.environ["GROQ_API_KEY"] = os.environ.get("GROQ_API_KEY")
 
 searchTool = TavilyAnswer()
 llm = ChatGroq(temperature=0, model_name="llama3-8b-8192")
-memory = ConversationBufferMemory()
 
 def get_llm_response(transcript):
     template = """
@@ -32,11 +30,10 @@ def get_llm_response(transcript):
     search_result = searchTool.run(transcript)
 
     prompt = ChatPromptTemplate.from_messages([
-            ("human", template + "Web Search Results : {search_result}" + " User Query : {snippet}" + " Chat History: {memory}")
+            ("human", template + "Web Search Results : {search_result}" + " User Query : {snippet}")
         ])
     chain = prompt | llm
 
-    result = chain.invoke({"search_result": search_result, "snippet": transcript, "memory": memory.buffer})
-    memory.save_context({"input": transcript}, {"output" : result.content})
+    result = chain.invoke({"search_result": search_result, "snippet": transcript})
 
     return result.content
