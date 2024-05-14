@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from starlette.responses import Response
 from AGENT import get_llm_response
 from TTS import text_to_speech
 from STT import audio_to_text
@@ -28,11 +29,11 @@ async def text_to_llm(payload: TextBody):
 async def text_to_ai_voice(payload: TextBody):
     if not payload.text:
         raise HTTPException(status_code=400, detail="Text input is empty")
-        
+
     llm_response = get_llm_response(payload.text)
     ai_audio_bytes = text_to_speech(llm_response)
 
-    return {"audio_data": ai_audio_bytes}
+    return Response(content=ai_audio_bytes, media_type="audio/mpeg")
 
 @app.post("/audio-to-ai-voice/")
 async def audio_to_ai_voice(payload: AudioBody):
