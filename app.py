@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from starlette.responses import Response
 from starlette.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+import base64
 from AGENT import get_llm_response
 from TTS import text_to_speech
 from STT import audio_to_text
