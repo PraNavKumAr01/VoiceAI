@@ -1,11 +1,24 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from starlette.responses import Response
+from fastapi.middleware.cors import CORSMiddleware
 from AGENT import get_llm_response
 from TTS import text_to_speech
 from STT import audio_to_text
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000/session",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class TextBody(BaseModel):
     text: str
