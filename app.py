@@ -44,7 +44,9 @@ async def text_to_llm(payload: TextBody):
 @app.post("/text-to-ai-voice/")
 async def text_to_ai_voice(payload: TextBody):
     if not payload.text:
-        raise HTTPException(status_code=400, detail="Text input is empty")
+        return {
+            "message" : "Nahi kaam kr rha"
+        }
 
     llm_response = get_llm_response(payload.text)
     ai_audio_bytes = text_to_speech(llm_response)
